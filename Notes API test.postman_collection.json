@@ -1,0 +1,368 @@
+{
+	"info": {
+		"_postman_id": "6d9a1ee2-8dc9-4aa0-9f7c-d4ec54d0ad92",
+		"name": "Notes API test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "53241935",
+		"_collection_link": "https://supernicher-727465.postman.co/workspace/supernicher's-Workspace~88ecc6bd-39db-4f70-8144-819641be4f9c/collection/53241935-6d9a1ee2-8dc9-4aa0-9f7c-d4ec54d0ad92?action=share&source=collection_link&creator=53241935"
+	},
+	"item": [
+		{
+			"name": "Adding Notes",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('response status code should have 201 value', () => {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"pm.test('response Content-Type header should have application/json value', () => {\r",
+							"    pm.expect(pm.response.headers.get('Content-Type')).to.equals('application/json; charset=utf-8');\r",
+							"});\r",
+							"\r",
+							"pm.test('response body should be an object', () => {\r",
+							"    const responseJson = pm.response.json();\r",
+							"    pm.expect(responseJson).to.be.an('object');\r",
+							"});\r",
+							"\r",
+							"pm.test('response body should have the correct property and value', () => {\r",
+							"    const responseJson = pm.response.json();\r",
+							"\r",
+							"    pm.expect(responseJson).to.ownProperty('status');\r",
+							"    pm.expect(responseJson.status).to.equals('success');\r",
+							"\r",
+							"    pm.expect(responseJson).to.ownProperty('message');\r",
+							"    pm.expect(responseJson.message).to.equals('Catatan berhasil ditambahkan');\r",
+							"\r",
+							"    pm.expect(responseJson).to.ownProperty('data');\r",
+							"    pm.expect(responseJson.data).to.be.an('object');\r",
+							"});\r",
+							"\r",
+							"pm.test('response body data should have noteId property and not equal to empty', () => {\r",
+							"    const responseJson = pm.response.json();\r",
+							"    const { data } = responseJson;\r",
+							" \r",
+							"    pm.expect(data).to.ownProperty('noteId');\r",
+							"    pm.expect(data.noteId).to.not.equals('');\r",
+							" \r",
+							"    pm.environment.set('noteId', data.noteId);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"Catatan Super Broly\",\r\n    \"tags\": [\"Alien\", \"Mind\", \"Beast\"],\r\n    \"body\": \"Catatan Legendary Broly\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:1011/notes",
+					"host": [
+						"localhost"
+					],
+					"port": "1011",
+					"path": [
+						"notes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Getting All Notes",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('response status code should have 200 value', () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test('response Content-Type header should have application/json value', () => {\r",
+							"    pm.expect(pm.response.headers.get('Content-Type')).to.equals('application/json; charset=utf-8');\r",
+							"});\r",
+							"\r",
+							"pm.test('response body should be an object', () => {\r",
+							"    const responseJson = pm.response.json();\r",
+							"    pm.expect(responseJson).to.be.an('object');\r",
+							"});\r",
+							"\r",
+							"pm.test('response body should have the correct property and value', () => {\r",
+							"    const responseJson = pm.response.json();\r",
+							"\r",
+							"    pm.expect(responseJson).to.ownProperty('status');\r",
+							"    pm.expect(responseJson.status).to.equals('success');\r",
+							"    pm.expect(responseJson).to.ownProperty('data');\r",
+							"    pm.expect(responseJson.data).to.be.an('object');\r",
+							"});\r",
+							"\r",
+							"pm.test('response body data should have a notes array and contain at least 1 item', () => {\r",
+							"    const responseJson = pm.response.json();\r",
+							"    const { data } = responseJson;\r",
+							" \r",
+							"    pm.expect(data).to.ownProperty('notes');\r",
+							"    pm.expect(data.notes).to.be.an('array');\r",
+							"    pm.expect(data.notes).lengthOf.at.least(1);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:1011/notes",
+					"host": [
+						"localhost"
+					],
+					"port": "1011",
+					"path": [
+						"notes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Getting specified notes",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('response status code should have 200 value', () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test('response Content-Type header should have application/json value', () => {\r",
+							"    pm.expect(pm.response.headers.get('Content-Type')).to.equals('application/json; charset=utf-8');\r",
+							"});\r",
+							"\r",
+							"pm.test('response body should be an object', () => {\r",
+							"    const responseJson = pm.response.json();\r",
+							"    pm.expect(responseJson).to.be.an('object');\r",
+							"});\r",
+							"\r",
+							"pm.test('response body should have the correct property and value', () => {\r",
+							"    const responseJson = pm.response.json();\r",
+							"\r",
+							"    pm.expect(responseJson).to.ownProperty('status');\r",
+							"    pm.expect(responseJson.status).to.equals('success');\r",
+							"    pm.expect(responseJson).to.ownProperty('data');\r",
+							"    pm.expect(responseJson.data).to.be.an('object');\r",
+							"});\r",
+							"\r",
+							"pm.test('response body data should have a notes array and contain at least 1 item', () => {\r",
+							"    const responseJson = pm.response.json();\r",
+							"    const { data } = responseJson;\r",
+							" \r",
+							"    pm.expect(data).to.have.ownProperty('note');\r",
+							"    pm.expect(data).to.be.an('object');\r",
+							"});\r",
+							"\r",
+							"pm.test('note object should have contain correct value for id, title, body, and tags property', () => {\r",
+							"    const responseJson = pm.response.json();\r",
+							"    const { data: {note} } = responseJson;\r",
+							"\r",
+							"    const expectedId = pm.environment.get('noteId');\r",
+							"    const expectedTitle = 'Catatan Super Broly';\r",
+							"    const expectedTags = ['Alien', 'Mind', 'Beast'];\r",
+							"    const expectedBody = 'Catatan Legendary Broly';\r",
+							"\r",
+							"    pm.expect(note).to.have.ownProperty('id');\r",
+							"    pm.expect(note.id).to.equals(expectedId);\r",
+							"    pm.expect(note).to.have.ownProperty('title');\r",
+							"    pm.expect(note.title).to.equals(expectedTitle);\r",
+							"    pm.expect(note).to.have.ownProperty('tags');\r",
+							"    pm.expect(note.tags).to.eql(expectedTags);\r",
+							"    pm.expect(note).to.have.ownProperty('body');\r",
+							"    pm.expect(note.body).to.equals(expectedBody);\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:1011/notes/{{noteId}}",
+					"host": [
+						"localhost"
+					],
+					"port": "1011",
+					"path": [
+						"notes",
+						"{{noteId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Notes",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('response status code should have 200 value', () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test('response Content-Type header should have application/json value', () => {\r",
+							"    pm.expect(pm.response.headers.get('Content-Type')).to.equals('application/json; charset=utf-8');\r",
+							"});\r",
+							"\r",
+							"pm.test('response body should be an object', () => {\r",
+							"    const responseJson = pm.response.json();\r",
+							"    pm.expect(responseJson).to.be.an('object');\r",
+							"});\r",
+							"\r",
+							"pm.test('response body should have the correct property and value', () => {\r",
+							"    const responseJson = pm.response.json();\r",
+							"\r",
+							"    pm.expect(responseJson).to.have.ownProperty('status');\r",
+							"    pm.expect(responseJson.status).to.equals('success');\r",
+							"    pm.expect(responseJson).to.have.ownProperty('message');\r",
+							"    pm.expect(responseJson.message).to.equals('catatan berhasil diperbarui');\r",
+							"});\r",
+							"\r",
+							"pm.test('when request the updated note', () => {\r",
+							"    const noteId = pm.environment.get('noteId');\r",
+							"    pm.sendRequest(`http://localhost:3000/notes/${noteId}`, (error, response) => {\r",
+							"        if(!error) {\r",
+							"            pm.test('then the updated note should contain the latest data', () => {\r",
+							"                const responseJson = response.json();\r",
+							"                const { data } = responseJson;\r",
+							" \r",
+							"                const expectedTitle = 'Catatan Broly 2';\r",
+							"                const expectedTags = ['Legendary', 'mythic', 'Annual'];\r",
+							"                const expectedBody = 'Perjalanan broly 2';\r",
+							" \r",
+							"                pm.expect(data.title).to.equals(expectedTitle);\r",
+							"                pm.expect(data.tags).to.eql(expectedTags);\r",
+							"                pm.expect(data.body).to.equals(expectedBody);\r",
+							"            });\r",
+							"        }\r",
+							"    });\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"Catatan Broly 2\",\r\n    \"tags\": [\"Legendary\", \"mythic\", \"Annual\"],\r\n    \"body\": \"Perjalanan broly 2\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:1011/notes/{{noteId}}",
+					"host": [
+						"localhost"
+					],
+					"port": "1011",
+					"path": [
+						"notes",
+						"{{noteId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Notes",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('response status code should have 200 value', () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test('response Content-Type header should have application/json value', () => {\r",
+							"    pm.expect(pm.response.headers.get('Content-Type')).to.equals('application/json; charset=utf-8');\r",
+							"});\r",
+							"\r",
+							"pm.test('response body should be an object', () => {\r",
+							"    const responseJson = pm.response.json();\r",
+							"    pm.expect(responseJson).to.be.an('object');\r",
+							"});\r",
+							"\r",
+							"pm.test('response body should have the correct property and value', () => {\r",
+							"    const responseJson = pm.response.json();\r",
+							"\r",
+							"    pm.expect(responseJson).to.have.ownProperty('status');\r",
+							"    pm.expect(responseJson.status).to.equals('success');\r",
+							"    pm.expect(responseJson).to.have.ownProperty('message');\r",
+							"    pm.expect(responseJson.message).to.equals('Catatan berhasil dihapus');\r",
+							"});\r",
+							"\r",
+							"pm.test('when request the deleted note', () => {\r",
+							"    const noteId = pm.environment.get('noteId');\r",
+							"    pm.sendRequest(`http://localhost:3000/notes/${noteId}`, (error, response) => {\r",
+							"        if(!error) {\r",
+							"            pm.test('the deleted note should be not found', () => {\r",
+							"                pm.expect(response.code).to.equals(404);\r",
+							"                const responseJson = response.json();\r",
+							"                pm.expect(responseJson.status).to.equals('failed');\r",
+							"                pm.expect(responseJson.message).to.equals('Catatan tidak ditemukan');\r",
+							"            });\r",
+							"        }\r",
+							"    });\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:1011/notes/{{noteId}}",
+					"host": [
+						"localhost"
+					],
+					"port": "1011",
+					"path": [
+						"notes",
+						"{{noteId}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
